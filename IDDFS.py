@@ -7,14 +7,13 @@ Created on Tue Oct 12 12:22:08 2021
 
 import time
 import copy
-from State import State
-from Helpers import isOpposite,printFinal
+from Helpers import getAllMoves,makeMove,isOpposite,printFinal
 
 def dfs_rec(currentState,path:list,goalState,maxDepth):
-    if(currentState.grid==goalState.grid):
+    if(currentState[2]==goalState[2]):
         return path;
     elif(len(path) < maxDepth):
-        possibleMoves = currentState.getAllMoves()
+        possibleMoves = getAllMoves(currentState)
         for m in possibleMoves:   
             lastMove = ''
             if(len(path)>0):
@@ -22,17 +21,15 @@ def dfs_rec(currentState,path:list,goalState,maxDepth):
             if not(isOpposite(m,lastMove)):
                 cscopy = copy.deepcopy(currentState)
                 pathcopy = copy.deepcopy(path)
-                cscopy.makeMove(m)
+                makeMove(cscopy,m)
                 pathcopy.append(m)    
                 solution = dfs_rec(cscopy,pathcopy, goalState,maxDepth)
                 if(solution != None):
                     return solution
     return None        
 
-def DFSgo(startState,goalState):
-    print("{0} to {1}".format(startState,goalState))
-    start = State(startState)
-    goal = State(goalState)
+def DFSgo(start,goal):
+    print("{0} to {1}".format(start,goal))
     found = False
     depth = 1
     solution = list()

@@ -22,10 +22,10 @@ b = [[0, 0, [[0, 1, 8], [3, 6, 7], [5, 4, 2]]],
 [2, 1, [[8, 6, 7], [2, 5, 4], [3, 0, 1]]]]
 goalb = [2,2,[[1,2,3],[4,5,6],[7,8,0]]]
 
-'''for i in a:
+for i in a:
     startDFS(i,goala)
 for i in b: 
-    startDFS(i,goalb)'''
+    startDFS(i,goalb)
 for i in a:
     startAS(i,goala)
 for i in b: 

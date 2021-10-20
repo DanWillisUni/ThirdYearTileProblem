@@ -7,8 +7,7 @@ Created on Tue Oct 19 14:17:04 2021
 
 import time
 import copy
-from State import State
-from Helpers import isOpposite,printFinal
+from Helpers import getAllMoves,makeMove,isOpposite,printFinal
     
 def evaluateDif(previousState,direction,goalState):    
     newY = 0
@@ -23,21 +22,21 @@ def evaluateDif(previousState,direction,goalState):
         newX = - 1
         
     count = 1
-    if(previousState.grid[previousState.blankY + newY][previousState.blankX + newX] == goalState.grid[previousState.blankY][previousState.blankX]):#non zero moves to where it should be
+    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
         count = count - 1
-    if(goalState.blankX == previousState.blankX + newX and goalState.blankY == previousState.blankY + newY):#zero moves to where it should be
+    if(goalState[1] == previousState[1] + newX and goalState[0] == previousState[0] + newY):#zero moves to where it should be
         count = count - 1
-    if(previousState.grid[previousState.blankY + newY][previousState.blankX + newX] == goalState.grid[previousState.blankY + newY][previousState.blankX+ newX]):#non zero moves out of where it should be
+    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0] + newY][previousState[1]+ newX]):#non zero moves out of where it should be
         count = count + 1
-    if(goalState.blankY == previousState.blankY and goalState.blankX == previousState.blankX):#zero moves out of where it should be
+    if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
         count = count + 1
     return count
         
 def as_rec(currentState,path,goalState,maxDepth,currentScore):
-    if(currentState.grid==goalState.grid):
+    if(currentState[2]==goalState[2]):
         return path;
     else:
-        possibleMoves = currentState.getAllMoves()
+        possibleMoves = getAllMoves(currentState)
         for m in possibleMoves:   
             lastMove = ''
             if(len(path)>0):
@@ -46,7 +45,7 @@ def as_rec(currentState,path,goalState,maxDepth,currentScore):
             if (not(isOpposite(m,lastMove)) and potentialScore<maxDepth):
                 cscopy = copy.deepcopy(currentState)
                 pathcopy = copy.deepcopy(path)
-                cscopy.makeMove(m)
+                makeMove(cscopy,m)
                 pathcopy.append(m)    
                 solution = as_rec(cscopy,pathcopy, goalState,maxDepth,potentialScore)
                 if(solution != None):
@@ -55,16 +54,14 @@ def as_rec(currentState,path,goalState,maxDepth,currentScore):
         
 def evaluateStartScore(currentState,goalState):
     count = 0
-    for i in range(len(currentState.grid)):
-        for j in range(len(currentState.grid[i])):
-            if(currentState.grid[i][j]!=goalState.grid[i][j]):
+    for i in range(len(currentState[2])):
+        for j in range(len(currentState[2][i])):
+            if(currentState[2][i][j]!=goalState[2][i][j]):
                 count = count + 1
     return count
         
-def ASgo(startState,goalState):
-    print("{0} to {1}".format(startState,goalState))
-    start = State(startState)
-    goal = State(goalState) 
+def ASgo(start,goal):
+    print("{0} to {1}".format(start,goal))    
     solution = list()
     found = False
     t0 = time.time()
