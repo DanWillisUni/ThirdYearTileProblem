@@ -8,7 +8,7 @@ Created on Tue Oct 19 14:17:04 2021
 import time
 import copy
 from Helpers import getAllMoves,makeMove,isOpposite,printFinal
-    
+
 def evaluateDif(previousState,direction,goalState):    
     newY = 0
     newX = 0
@@ -32,7 +32,7 @@ def evaluateDif(previousState,direction,goalState):
         count = count + 1
     return count
         
-def as_rec(currentState,path,goalState,maxDepth,currentScore):
+def as_rec(currentState,path,goalState,maxDepth,currentScore):    
     if(currentState[2]==goalState[2]):
         return path;
     else:
@@ -47,6 +47,8 @@ def as_rec(currentState,path,goalState,maxDepth,currentScore):
                 pathcopy = copy.deepcopy(path)
                 makeMove(cscopy,m)
                 pathcopy.append(m)    
+                global moves
+                moves = moves + 1
                 solution = as_rec(cscopy,pathcopy, goalState,maxDepth,potentialScore)
                 if(solution != None):
                     return solution
@@ -64,6 +66,8 @@ def go(start,goal):
     print("{0} to {1}".format(start,goal))    
     solution = list()
     found = False
+    global moves
+    moves = 0
     t0 = time.time()
     maxDepth = evaluateStartScore(start,goal)   
     while found == False:
@@ -73,7 +77,7 @@ def go(start,goal):
         else:
             maxDepth = maxDepth + 1
     t1 = time.time()    
-    printFinal(t1-t0,solution)
+    printFinal(t1-t0,solution,moves)
     
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
 [0, 2, [[5, 6, 0], [1, 3, 8], [4, 7, 2]]],

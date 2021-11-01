@@ -5,25 +5,25 @@ Created on Tue Oct 12 12:22:08 2021
 @author: danny
 """
 
-import time
+from time import process_time
 import copy
-from Helpers import getAllMoves,makeMove,isOpposite,printFinal
+from Helpers import move,isOpposite,printFinal
 
-def dfs_rec(currentState,path:list,goalState,maxDepth):
-    if(currentState[2]==goalState[2]):
+def dfs_rec(path:list,goalState,maxDepth): 
+    global moves
+    if(path[len(path) - 1][2]==goalState[2]):
         return path;
     elif(len(path) < maxDepth):
-        possibleMoves = getAllMoves(currentState)
-        for m in possibleMoves:   
-            lastMove = ''
-            if(len(path)>0):
-                lastMove = path[len(path) - 1]
-            if not(isOpposite(m,lastMove)):
-                cscopy = copy.deepcopy(currentState)
+        for m in move(path[len(path) - 1]):             
+            moves = moves + 1
+            skip = False
+            if(len(path) > 2):           
+                if(path[len(path) - 2] == m):
+                    skip = True
+            if(not skip):
                 pathcopy = copy.deepcopy(path)
-                makeMove(cscopy,m)
-                pathcopy.append(m)    
-                solution = dfs_rec(cscopy,pathcopy, goalState,maxDepth)
+                pathcopy.append(m)                               
+                solution = dfs_rec(pathcopy, goalState,maxDepth)
                 if(solution != None):
                     return solution
     return None        
@@ -33,15 +33,17 @@ def go(start,goal):
     found = False
     depth = 1
     solution = list()
-    t0 = time.time()
+    global moves
+    moves = 0
+    t_start = process_time() 
     while found == False:
-        solution = dfs_rec(start,list(),goal,depth)
+        solution = dfs_rec([start],goal,depth)
         if(solution != None):
             found = True
         else:
             depth = depth + 1
-    t1 = time.time()  
-    printFinal(t1-t0,solution)
+    t_stop = process_time()
+    printFinal(t_stop-t_start,solution,moves)
     
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
 [0, 2, [[5, 6, 0], [1, 3, 8], [4, 7, 2]]],
