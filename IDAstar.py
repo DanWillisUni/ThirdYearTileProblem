@@ -7,51 +7,39 @@ Created on Tue Oct 19 14:17:04 2021
 
 import time
 import copy
-from Helpers import getAllMoves,makeMove,isOpposite,printFinal
+from Helpers import move,printFinal
 
-def evaluateDif(previousState,direction,goalState):    
-    newY = 0
-    newX = 0
-    if(direction == "N"):
-        newY = - 1
-    elif(direction == "S"):
-        newY = 1
-    elif(direction == "E"):
-        newX = 1
-    elif(direction == "W"):
-        newX = - 1
-        
+def evaluateDif(previousState,nextstate,goalState): 
     count = 1
-    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
+    if(nextstate[2][previousState[0]][previousState[1]] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
         count = count - 1
-    if(goalState[1] == previousState[1] + newX and goalState[0] == previousState[0] + newY):#zero moves to where it should be
+    if(goalState[1] == nextstate[1] and goalState[0] == nextstate[0]):#zero moves to where it should be
         count = count - 1
-    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0] + newY][previousState[1]+ newX]):#non zero moves out of where it should be
+    if(previousState[2][nextstate[0]][nextstate[1]] == goalState[2][nextstate[0]][nextstate[1]]):#non zero moves out of where it should be
         count = count + 1
     if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
         count = count + 1
     return count
         
-def as_rec(currentState,path,goalState,maxDepth,currentScore):    
-    if(currentState[2]==goalState[2]):
+def as_rec(path,goalState,maxDepth,currentScore):  
+    global moves
+    if(path[len(path) - 1]==goalState):
         return path;
-    else:
-        possibleMoves = getAllMoves(currentState)
-        for m in possibleMoves:   
-            lastMove = ''
-            if(len(path)>0):
-                lastMove = path[len(path) - 1]
-            potentialScore = currentScore + evaluateDif(currentState,m,goalState)
-            if (not(isOpposite(m,lastMove)) and potentialScore<maxDepth):
-                cscopy = copy.deepcopy(currentState)
-                pathcopy = copy.deepcopy(path)
-                makeMove(cscopy,m)
-                pathcopy.append(m)    
-                global moves
-                moves = moves + 1
-                solution = as_rec(cscopy,pathcopy, goalState,maxDepth,potentialScore)
-                if(solution != None):
-                    return solution
+    else:        
+        for m in move(path[len(path) - 1]):              
+            moves = moves + 1
+            skip = False
+            if(len(path) > 1):           
+                if(path[len(path) - 2] == m):
+                    skip = True
+            if(not skip):   
+                potentialScore = currentScore + evaluateDif(path[len(path) - 1],m,goalState)
+                if (potentialScore<maxDepth):                 
+                    pathcopy = copy.deepcopy(path)
+                    pathcopy.append(m) 
+                    solution = as_rec(pathcopy, goalState,maxDepth,potentialScore)
+                    if(solution != None):
+                        return solution
     return None
         
 def evaluateStartScore(currentState,goalState):
@@ -68,16 +56,16 @@ def go(start,goal):
     found = False
     global moves
     moves = 0
-    t0 = time.time()
+    t_start = time.process_time() 
     maxDepth = evaluateStartScore(start,goal)   
     while found == False:
-        solution = as_rec(start,list(),goal,maxDepth,evaluateStartScore(start,goal))
+        solution = as_rec([start],goal,maxDepth,evaluateStartScore(start,goal))
         if(solution != None):
             found = True
         else:
             maxDepth = maxDepth + 1
-    t1 = time.time()    
-    printFinal(t1-t0,solution,moves)
+    t_stop = time.process_time()
+    printFinal(t_stop-t_start,solution,moves)
     
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
 [0, 2, [[5, 6, 0], [1, 3, 8], [4, 7, 2]]],

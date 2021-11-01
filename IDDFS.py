@@ -5,19 +5,19 @@ Created on Tue Oct 12 12:22:08 2021
 @author: danny
 """
 
-from time import process_time
+import time
 import copy
-from Helpers import move,isOpposite,printFinal
+from Helpers import move,printFinal
 
 def dfs_rec(path:list,goalState,maxDepth): 
     global moves
-    if(path[len(path) - 1][2]==goalState[2]):
+    if(path[len(path) - 1]==goalState):
         return path;
     elif(len(path) < maxDepth):
         for m in move(path[len(path) - 1]):             
             moves = moves + 1
             skip = False
-            if(len(path) > 2):           
+            if(len(path) > 1):           
                 if(path[len(path) - 2] == m):
                     skip = True
             if(not skip):
@@ -35,14 +35,14 @@ def go(start,goal):
     solution = list()
     global moves
     moves = 0
-    t_start = process_time() 
+    t_start = time.process_time() 
     while found == False:
         solution = dfs_rec([start],goal,depth)
         if(solution != None):
             found = True
         else:
             depth = depth + 1
-    t_stop = process_time()
+    t_stop = time.process_time()
     printFinal(t_stop-t_start,solution,moves)
     
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
