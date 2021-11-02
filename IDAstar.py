@@ -7,6 +7,7 @@ Created on Tue Oct 19 14:17:04 2021
 
 import time
 import copy
+import heapq
 from Helpers import move,printFinal
 
 def evaluateDif(previousState,nextstate,goalState): 
@@ -21,25 +22,21 @@ def evaluateDif(previousState,nextstate,goalState):
         count = count + 1
     return count
         
-def as_rec(path,goalState,maxDepth,currentScore):  
-    global moves
+def as_doNode(path,goalState,currentScore): 
+    global h
     if(path[len(path) - 1]==goalState):
         return path;
     else:        
-        for m in move(path[len(path) - 1]):              
-            moves = moves + 1
+        for m in move(path[len(path) - 1]): 
             skip = False
             if(len(path) > 1):           
                 if(path[len(path) - 2] == m):
                     skip = True
-            if(not skip):   
+            if(not skip):                 
                 potentialScore = currentScore + evaluateDif(path[len(path) - 1],m,goalState)
-                if (potentialScore<maxDepth):                 
-                    pathcopy = copy.deepcopy(path)
-                    pathcopy.append(m) 
-                    solution = as_rec(pathcopy, goalState,maxDepth,potentialScore)
-                    if(solution != None):
-                        return solution
+                pathcopy = copy.deepcopy(path)
+                pathcopy.append(m) 
+                heapq.heappush(h, (potentialScore, pathcopy))                
     return None
         
 def evaluateStartScore(currentState,goalState):
@@ -52,18 +49,17 @@ def evaluateStartScore(currentState,goalState):
         
 def go(start,goal):
     print("{0} to {1}".format(start,goal))    
-    solution = list()
-    found = False
-    global moves
+    solution = None
+    found = False  
     moves = 0
-    t_start = time.process_time() 
-    maxDepth = evaluateStartScore(start,goal)   
-    while found == False:
-        solution = as_rec([start],goal,maxDepth,evaluateStartScore(start,goal))
-        if(solution != None):
-            found = True
-        else:
-            maxDepth = maxDepth + 1
+    global h  
+    h = []
+    t_start = time.process_time()
+    heapq.heappush(h,(evaluateStartScore(start,goal),[start])) 
+    while solution == None:
+        item = heapq.heappop(h)
+        solution = as_doNode(item[1], goal,item[0])
+        moves = moves + 1
     t_stop = time.process_time()
     printFinal(t_stop-t_start,solution,moves)
     
