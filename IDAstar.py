@@ -32,7 +32,7 @@ def as_doNode(path,goalState,currentScore):
             if(len(path) > 1):           
                 if(path[len(path) - 2] == m):
                     skip = True
-            if(not skip):                 
+            if(not skip):
                 potentialScore = currentScore + evaluateDif(path[len(path) - 1],m,goalState)
                 pathcopy = copy.deepcopy(path)
                 pathcopy.append(m) 

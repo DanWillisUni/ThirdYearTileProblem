@@ -33,9 +33,24 @@ def move(state):
         nextstate[0] = state[0] - 1
         yield nextstate
 
+def getDirection(firstState,nextState):
+    xDif = firstState[1]-nextState[1]
+    yDif = firstState[0]-nextState[0]
+    if(yDif == -1):
+        return "S"
+    elif(yDif == 1):
+        return "N"
+    elif(xDif == -1):
+        return "E"
+    elif(xDif == 1):
+        return "W"
+
 def printFinal(time,solution,moves):
+    directions = []
+    for x in range(len(solution) - 2):
+        directions.append(getDirection(solution[x],solution[x+1]))
     print("Time was: {:8.2f} seconds".format(time))
-    print("Solution was: ",solution)
+    print("Solution was: ",directions)
     print("Length: ",str(len(solution) - 1))
     print("Moves: ",moves)
     print()
