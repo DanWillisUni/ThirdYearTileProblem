@@ -7,51 +7,45 @@ Created on Tue Oct 19 12:12:51 2021
 
 import copy
 
-def move(state):    
-    if(state[1] !=len(state[2][0]) - 1):
-        nextstate = copy.deepcopy(state)
-        nextstate[2][state[0]][state[1]] = state[2][state[0]][state[1] + 1]
-        nextstate[2][state[0]][state[1] + 1] = 0
-        nextstate[1] = state[1] + 1
-        yield nextstate
-    if(state[1] !=0):
-        nextstate = copy.deepcopy(state)
-        nextstate[2][state[0]][state[1]] = state[2][state[0]][state[1] - 1]
-        nextstate[2][state[0]][state[1] - 1] = 0
-        nextstate[1] = state[1] - 1  
-        yield nextstate
-    if(state[0] !=len(state[2])-1):
-        nextstate = copy.deepcopy(state)
-        nextstate[2][state[0]][state[1]] = state[2][state[0] + 1][state[1]]
-        nextstate[2][state[0] + 1][state[1]] = 0
-        nextstate[0] = state[0] + 1
-        yield nextstate
-    if(state[0] !=0):
-        nextstate = copy.deepcopy(state)
-        nextstate[2][state[0]][state[1]] = state[2][state[0] - 1][state[1]]
-        nextstate[2][state[0] - 1][state[1]] = 0
-        nextstate[0] = state[0] - 1
-        yield nextstate
+def getAllMoves(state,lastMove):
+    allowedMoves = []
+    if(state[1] !=len(state[2][0]) - 1 and lastMove != "W"):
+        allowedMoves.append("E")
+    if(state[1] !=0 and lastMove != "E"):
+        allowedMoves.append("W");
+    if(state[0] !=len(state[2])-1 and lastMove != "N"):
+        allowedMoves.append("S")
+    if(state[0] !=0 and lastMove !="S"):
+        allowedMoves.append("N")
+    return allowedMoves
 
-def getDirection(firstState,nextState):
-    xDif = firstState[1]-nextState[1]
-    yDif = firstState[0]-nextState[0]
-    if(yDif == -1):
-        return "S"
-    elif(yDif == 1):
-        return "N"
-    elif(xDif == -1):
-        return "E"
-    elif(xDif == 1):
-        return "W"
+def makeMove(state,direction):
+    cont = True
+    if(direction == "N"):
+        newBlankY = state[0] - 1
+        newBlankX = state[1]
+    elif(direction == "S"):
+        newBlankY = state[0] + 1
+        newBlankX = state[1]
+    elif(direction == "E"):
+        newBlankY = state[0]
+        newBlankX = state[1] + 1
+    elif(direction == "W"):
+        newBlankY = state[0]
+        newBlankX = state[1] - 1
+    else:
+        cont = False;
+        print("Unrecognised direction",direction)
+    if(cont):
+        state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]
+        state[2][newBlankY][newBlankX] = 0
+        state[0] = newBlankY
+        state[1] = newBlankX
 
-def printFinal(time,solution,moves):
-    directions = []
-    for x in range(len(solution) - 2):
-        directions.append(getDirection(solution[x],solution[x+1]))
+def printFinal(time,solution,moves):    
     print("Time was: {:8.2f} seconds".format(time))
-    print("Solution was: ",directions)
-    print("Length: ",str(len(solution) - 1))
+    print("Solution was: ",solution)
+    print("Length: ",str(len(solution)))
     print("Moves: ",moves)
     print()
     

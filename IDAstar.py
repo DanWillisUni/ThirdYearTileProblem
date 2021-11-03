@@ -8,35 +8,47 @@ Created on Tue Oct 19 14:17:04 2021
 import time
 import copy
 import heapq
-from Helpers import move,printFinal
+from Helpers import getAllMoves,makeMove,printFinal
 
-def evaluateDif(previousState,nextstate,goalState): 
+def evaluateDif(previousState,direction,goalState):    
+    newY = 0
+    newX = 0
+    if(direction == "N"):
+        newY = - 1
+    elif(direction == "S"):
+        newY = 1
+    elif(direction == "E"):
+        newX = 1
+    elif(direction == "W"):
+        newX = - 1
+        
     count = 1
-    if(nextstate[2][previousState[0]][previousState[1]] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
+    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
         count = count - 1
-    if(goalState[1] == nextstate[1] and goalState[0] == nextstate[0]):#zero moves to where it should be
+    if(goalState[1] == previousState[1] + newX and goalState[0] == previousState[0] + newY):#zero moves to where it should be
         count = count - 1
-    if(previousState[2][nextstate[0]][nextstate[1]] == goalState[2][nextstate[0]][nextstate[1]]):#non zero moves out of where it should be
+    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0] + newY][previousState[1]+ newX]):#non zero moves out of where it should be
         count = count + 1
     if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
         count = count + 1
     return count
         
-def as_doNode(path,goalState,currentScore): 
+def as_doNode(currentState,path,goalState,currentScore): 
     global h
-    if(path[len(path) - 1]==goalState):
+    if(currentState==goalState):
         return path;
-    else:        
-        for m in move(path[len(path) - 1]): 
-            skip = False
-            if(len(path) > 1):           
-                if(path[len(path) - 2] == m):
-                    skip = True
-            if(not skip):
-                potentialScore = currentScore + evaluateDif(path[len(path) - 1],m,goalState)
-                pathcopy = copy.deepcopy(path)
-                pathcopy.append(m) 
-                heapq.heappush(h, (potentialScore, pathcopy))                
+    else:  
+        lastMove = ''
+        if(len(path)>0):
+            lastMove = path[len(path) - 1]
+        possibleMoves = getAllMoves(currentState,lastMove)
+        for m in possibleMoves:      
+            potentialScore = currentScore + evaluateDif(currentState,m,goalState)
+            cscopy = copy.deepcopy(currentState)
+            pathcopy = copy.deepcopy(path)
+            makeMove(cscopy,m)
+            pathcopy.append(m)    
+            heapq.heappush(h, (potentialScore, cscopy,pathcopy))                
     return None
         
 def evaluateStartScore(currentState,goalState):
@@ -55,10 +67,10 @@ def go(start,goal):
     global h  
     h = []
     t_start = time.process_time()
-    heapq.heappush(h,(evaluateStartScore(start,goal),[start])) 
+    heapq.heappush(h,(evaluateStartScore(start,goal),start,[])) 
     while solution == None:
-        item = heapq.heappop(h)
-        solution = as_doNode(item[1], goal,item[0])
+        item = heapq.heappop(h)        
+        solution = as_doNode(item[1],item[2], goal,item[0])
         moves = moves + 1
     t_stop = time.process_time()
     printFinal(t_stop-t_start,solution,moves)

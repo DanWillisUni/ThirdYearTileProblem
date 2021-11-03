@@ -7,26 +7,27 @@ Created on Tue Oct 12 12:22:08 2021
 
 import time
 import copy
-from Helpers import move,printFinal
+from Helpers import getAllMoves,makeMove,printFinal
 
-def dfs_rec(path:list,goalState,maxDepth): 
+def dfs_rec(currentState,path:list,goalState,maxDepth):
     global moves
-    if(path[len(path) - 1]==goalState):
+    if(currentState[2]==goalState[2]):
         return path;
     elif(len(path) < maxDepth):
-        for m in move(path[len(path) - 1]):             
-            moves = moves + 1
-            skip = False
-            if(len(path) > 1):           
-                if(path[len(path) - 2] == m):
-                    skip = True
-            if(not skip):
-                pathcopy = copy.deepcopy(path)
-                pathcopy.append(m)                               
-                solution = dfs_rec(pathcopy, goalState,maxDepth)
-                if(solution != None):
-                    return solution
-    return None        
+        lastMove = ''
+        if(len(path)>0):
+            lastMove = path[len(path) - 1]
+        possibleMoves = getAllMoves(currentState,lastMove)
+        for m in possibleMoves:
+            moves = moves + 1            
+            cscopy = copy.deepcopy(currentState)
+            pathcopy = copy.deepcopy(path)
+            makeMove(cscopy,m)
+            pathcopy.append(m)    
+            solution = dfs_rec(cscopy,pathcopy, goalState,maxDepth)
+            if(solution != None):
+                return solution
+    return None               
 
 def go(start,goal):
     print("{0} to {1}".format(start,goal))
@@ -37,7 +38,7 @@ def go(start,goal):
     moves = 0
     t_start = time.process_time() 
     while found == False:
-        solution = dfs_rec([start],goal,depth)
+        solution = dfs_rec(start,[],goal,depth)
         if(solution != None):
             found = True
         else:
