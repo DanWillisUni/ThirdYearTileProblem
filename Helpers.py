@@ -8,41 +8,92 @@ Created on Tue Oct 19 12:12:51 2021
 import copy
 
 def getAllMoves(state,lastMove):
-    allowedMoves = []
-    if(state[1] !=len(state[2][0]) - 1 and lastMove != "W"):
+    """
+    Gets the allowed move directions from the current state
+
+    Ignores a move if it would take it back to the previous state
+    EG: if the last move was West it would not return East
+
+    Parameters
+    ----------
+    state : []
+        current state of the problem
+    lastMove : str
+        Direction that was last moved
+
+    Returns
+    -------
+    []
+        The directions that are possible to move from based on the current state
+
+    """
+    allowedMoves = [] #I discovered that a list was more efficient that yielding a next state
+    if(state[1] !=len(state[2][0]) - 1 and lastMove != "W"):#if the player can move east and west wasnt the last move
         allowedMoves.append("E")
-    if(state[1] !=0 and lastMove != "E"):
+    if(state[1] !=0 and lastMove != "E"):#if the player can move west and east wasnt the last move
         allowedMoves.append("W");
-    if(state[0] !=len(state[2])-1 and lastMove != "N"):
+    if(state[0] !=len(state[2])-1 and lastMove != "N"):#if the player can move south and north wasnt the last move
         allowedMoves.append("S")
-    if(state[0] !=0 and lastMove !="S"):
+    if(state[0] !=0 and lastMove !="S"):#if the player can move north and south wasnt the last move
         allowedMoves.append("N")
     return allowedMoves
 
 def makeMove(state,direction):
+    """
+    Transforms the state by making a move in the direction    
+
+    Parameters
+    ----------
+    state : []
+        current state of the problem
+    directione : str
+        Direction that needs to be moved
+
+    Returns
+    -------
+    []
+        The state after being transormed by the move in the direction
+
+    """
     cont = True
-    if(direction == "N"):
+    if(direction == "N"):#if the direction is north
         newBlankY = state[0] - 1
         newBlankX = state[1]
-    elif(direction == "S"):
+    elif(direction == "S"):#if the direction is south
         newBlankY = state[0] + 1
         newBlankX = state[1]
-    elif(direction == "E"):
+    elif(direction == "E"):#if the direction is east
         newBlankY = state[0]
         newBlankX = state[1] + 1
-    elif(direction == "W"):
+    elif(direction == "W"):#if the direction is west
         newBlankY = state[0]
         newBlankX = state[1] - 1
     else:
         cont = False;
-        print("Unrecognised direction",direction)
+        print("Unrecognised direction: ",direction)
     if(cont):
+        #make the move on the state
         state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]
         state[2][newBlankY][newBlankX] = 0
         state[0] = newBlankY
         state[1] = newBlankX
 
-def printFinal(time,solution,moves):    
+def printFinal(time,solution,moves):  
+    """
+    Prints the info about each solution to the problem
+
+    Once a solution is found this is called to display how long it took, what the solution was and how many states were looked at
+
+    Parameters
+    ----------
+    time : double
+        time that it took to find the solution
+    solution : []
+        current state of the problem
+    moves : int
+        The number of states that were looked at to find the solution to the problem
+
+    """
     print("Time was: {:8.2f} seconds".format(time))
     print("Solution was: ",solution)
     print("Length: ",str(len(solution)))

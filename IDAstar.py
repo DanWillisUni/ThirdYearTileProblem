@@ -22,7 +22,7 @@ def evaluateDif(previousState,direction,goalState):
     elif(direction == "W"):
         newX = - 1
         
-    count = 1
+    count = 1 # set to one because a move costs one
     if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
         count = count - 1
     if(goalState[1] == previousState[1] + newX and goalState[0] == previousState[0] + newY):#zero moves to where it should be
@@ -32,25 +32,7 @@ def evaluateDif(previousState,direction,goalState):
     if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
         count = count + 1
     return count
-        
-def as_doNode(currentState,path,goalState,currentScore): 
-    global h
-    if(currentState==goalState):
-        return path;
-    else:  
-        lastMove = ''
-        if(len(path)>0):
-            lastMove = path[len(path) - 1]
-        possibleMoves = getAllMoves(currentState,lastMove)
-        for m in possibleMoves:      
-            potentialScore = currentScore + evaluateDif(currentState,m,goalState)
-            cscopy = copy.deepcopy(currentState)
-            pathcopy = copy.deepcopy(path)
-            makeMove(cscopy,m)
-            pathcopy.append(m)    
-            heapq.heappush(h, (potentialScore, cscopy,pathcopy))                
-    return None
-        
+         
 def evaluateStartScore(currentState,goalState):
     count = 0
     for i in range(len(currentState[2])):
@@ -67,11 +49,24 @@ def go(start,goal):
     global h  
     h = []
     t_start = time.process_time()
-    heapq.heappush(h,(evaluateStartScore(start,goal),start,[])) 
-    while solution == None:
-        item = heapq.heappop(h)        
-        solution = as_doNode(item[1],item[2], goal,item[0])
+    item = heapq.heappushpop(h,(evaluateStartScore(start,goal),start,[]))
+    while solution == None:  
+        if(item[1]==goal):
+            solution = item[2];
+        else:  
+            lastMove = ''
+            if(len(item[2])>0):
+                lastMove = item[2][len(item[2]) - 1]
+            possibleMoves = getAllMoves(item[1],lastMove)
+            for m in possibleMoves:      
+                potentialScore = item[0] + evaluateDif(item[1],m,goal)
+                cscopy = copy.deepcopy(item[1])
+                pathcopy = copy.deepcopy(item[2])
+                makeMove(cscopy,m)
+                pathcopy.append(m)    
+                heapq.heappush(h, (potentialScore, cscopy,pathcopy))   
         moves = moves + 1
+        item =  heapq.heappop(h)
     t_stop = time.process_time()
     printFinal(t_stop-t_start,solution,moves)
     
