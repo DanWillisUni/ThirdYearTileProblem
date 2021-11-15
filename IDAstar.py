@@ -85,7 +85,6 @@ def go(start,goal):
     """
     print("{0} to {1}".format(start,goal))#print start and goal states  
     solution = None
-    found = False  
     moves = 0#set moves to 0
     global h  
     h = []#initilize the heap

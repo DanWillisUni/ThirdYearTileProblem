@@ -4,8 +4,8 @@ Created on Tue Oct 19 14:17:04 2021
 @author: danny
 """
 
-import time
-import copy
+import time#import for timing
+import copy#import for deepcopying
 from Helpers import getAllMoves,makeMove,printFinal
 
 def evaluateDif(previousState,direction): 
@@ -16,13 +16,11 @@ def evaluateDif(previousState,direction):
     previousState : []
         state of the problem before the move
     direction : string
-        direction moved
-    goalState : []
-        goal state of the problem    
+        direction to be moved
     Returns
     -------
     int
-        the increase in the score if the move was made from previousState in the direction given
+        the increase (can be negative) in the score if the move was made from previousState in the direction given
     """
     global goalState
     #set the difference in coordinates of the blank tile
@@ -49,24 +47,42 @@ def evaluateDif(previousState,direction):
     return count#return the difference
 
 def as_rec(currentScore,node,path,bound):
-    global moves
-    moves = moves + 1#add one to the moves counter
+    """
+    Searches the node and expands its children, if they have a low enough score it will recursivly call this function of them until a solution is found
+    
+    Parameters
+    ----------
+    currentScore : int
+        score of the current state
+    node : []
+        state of the problem
+    path : []
+        directions moved to get from the root to the current state
+    bound : int
+        the max score a node can get to be expanded
+    Returns
+    -------
+    []
+        If a solution is found without going over the max depth then the directions are returned in an array, otherwise None
+    """
+    global movesExamined
+    movesExamined = movesExamined + 1#add one to the moves counter
     global goalState
-    if(node==goalState):#if the item poppeds state is the goalstate
+    if(node==goalState):#if the current state is the goalstate
         return path#set the solution to the item poppeds path
-    else :  
-        lastMove = ''
+    else:#not the goal state
+        lastMove = ''#set last move to empty incase it is the first move
         if(len(path)>0):#if the length of the path is greater than 0
             lastMove = path[len(path) - 1]#set the lastMove to the last move direction
         possibleMoves = getAllMoves(node,lastMove)#get all possible moves
         for m in possibleMoves:#for each possible move
             potentialScore = currentScore + evaluateDif(node,m)#get potential score
-            if potentialScore <= bound:                
+            if potentialScore <= bound:#if the score of the node is less than or equal to the max allowed          
                 cscopy = copy.deepcopy(node)#copy current state
                 pathcopy = copy.deepcopy(path)#copy current path
                 makeMove(cscopy,m)#make the move on the copy of the current state
                 pathcopy.append(m)#add the direction moved to the copy of the path 
-                solution = as_rec(potentialScore,cscopy,pathcopy,bound)  
+                solution = as_rec(potentialScore,cscopy,pathcopy,bound)#recursive
                 if(solution != None):#if that branch returned something other than None return the solution
                         return solution#return the solution that was found further down the line
     return None#no solution found down the path                 
@@ -80,13 +96,11 @@ def evaluateStartScore(currentState):
     Parameters
     ----------
     currentState : []
-        current state of the problem  
-    goalState : []
-        goal state of the problem    
+        current state of the problem   
     Returns
     -------
     int
-        the score of the current state
+        the number of incorrect tiles in the grid
     """
     global goalState
     count = 0#score is initially set to 0
@@ -96,7 +110,7 @@ def evaluateStartScore(currentState):
                 count = count + 1#add one to the score
     return count
         
-def go(start,goal):
+def search(start,goal):
     """
     Solves from start to goal
     
@@ -110,18 +124,18 @@ def go(start,goal):
     """
     print("{0} to {1}".format(start,goal))#print start and goal states  
     solution = None
-    global moves
-    moves = 0#set moves to 0  
+    global movesExamined
+    movesExamined = 0#set moves to 0  
     global goalState
-    goalState = goal
+    goalState = goal#set the global goalState to the goal
     t_start = time.process_time()#start the timer
-    startBound = evaluateStartScore(start)
-    depth = startBound
+    startScore = evaluateStartScore(start)#get the evaluation of the minimum moves to make it to the goal
+    bound = startScore#set the depth to the starting evaluation
     while solution == None:#while a solution isnt found
-        solution = as_rec(startBound,start,[],depth)#attempt to find a solution at this depth       
-        depth = depth + 1#increase depth
+        solution = as_rec(startScore,start,[],bound)#attempt to find a solution at this depth       
+        bound = bound + 1#increase depth
     t_stop = time.process_time()#stop the timer
-    printFinal(t_stop-t_start,solution,moves)#print the info about the solution
+    printFinal(t_stop-t_start,solution,movesExamined)#print the info about the solution
     
 #set start states and goal states
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
@@ -140,8 +154,8 @@ goalb = [2,2,[[1,2,3],[4,5,6],[7,8,0]]]
 
 t_start = time.process_time()#start the timer
 for i in a:#for all first set of start states
-    go(i,goala)#solve with first goal
+    search(i,goala)#solve with first goal
 for i in b:#for all second set of start states
-    go(i,goalb)#solve for second goal
+    search(i,goalb)#solve for second goal
 t_stop = time.process_time()#stop the timer
-print("Done in {:8.2f} seconds".format(t_stop-t_start))#print the time taken
+print("Done in {:8.2f} seconds".format(t_stop-t_start))#print the time taken in total for the whole program

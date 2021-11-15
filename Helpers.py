@@ -66,8 +66,8 @@ def makeMove(state,direction):
     elif(direction == "W"):#if the direction is west
         newBlankX = state[1] - 1 
     #make the move on the state
-    state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]
-    state[2][newBlankY][newBlankX] = 0
+    state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]#set the tile that swapped with the 0
+    state[2][newBlankY][newBlankX] = 0#set the new 0
     state[0] = newBlankY
     state[1] = newBlankX
 
