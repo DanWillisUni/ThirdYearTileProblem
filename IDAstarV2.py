@@ -6,10 +6,9 @@ Created on Tue Oct 19 14:17:04 2021
 
 import time
 import copy
-import heapq
 from Helpers import getAllMoves,makeMove,printFinal
 
-def evaluateDif(previousState,direction,goalState): 
+def evaluateDif(previousState,direction): 
     """
     evaluate the difference to the current score that was made with the move
     Parameters
@@ -25,6 +24,7 @@ def evaluateDif(previousState,direction,goalState):
     int
         the increase in the score if the move was made from previousState in the direction given
     """
+    global goalState
     #set the difference in coordinates of the blank tile
     newY = 0
     newX = 0
@@ -47,8 +47,32 @@ def evaluateDif(previousState,direction,goalState):
     if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
         count = count + 1#add one to the score because A tile has been moved out of the correct location
     return count#return the difference
+
+def as_rec(currentScore,node,path,bound):
+    global moves
+    moves = moves + 1#add one to the moves counter
+    global goalState
+    if(node==goalState):#if the item poppeds state is the goalstate
+        return path#set the solution to the item poppeds path
+    else :  
+        lastMove = ''
+        if(len(path)>0):#if the length of the path is greater than 0
+            lastMove = path[len(path) - 1]#set the lastMove to the last move direction
+        possibleMoves = getAllMoves(node,lastMove)#get all possible moves
+        for m in possibleMoves:#for each possible move
+            potentialScore = currentScore + evaluateDif(node,m)#get potential score
+            if potentialScore <= bound:                
+                cscopy = copy.deepcopy(node)#copy current state
+                pathcopy = copy.deepcopy(path)#copy current path
+                makeMove(cscopy,m)#make the move on the copy of the current state
+                pathcopy.append(m)#add the direction moved to the copy of the path 
+                solution = as_rec(potentialScore,cscopy,pathcopy,bound)  
+                if(solution != None):#if that branch returned something other than None return the solution
+                        return solution#return the solution that was found further down the line
+    return None#no solution found down the path                 
+        
          
-def evaluateStartScore(currentState,goalState):
+def evaluateStartScore(currentState):
     """
     evaluate number of tiles that are in the wrong place
     
@@ -64,6 +88,7 @@ def evaluateStartScore(currentState,goalState):
     int
         the score of the current state
     """
+    global goalState
     count = 0#score is initially set to 0
     for i in range(len(currentState[2])):#for Y axis
         for j in range(len(currentState[2][i])):#for X axis
@@ -85,29 +110,16 @@ def go(start,goal):
     """
     print("{0} to {1}".format(start,goal))#print start and goal states  
     solution = None
-    found = False  
-    moves = 0#set moves to 0
-    global h  
-    h = []#initilize the heap
+    global moves
+    moves = 0#set moves to 0  
+    global goalState
+    goalState = goal
     t_start = time.process_time()#start the timer
-    item = heapq.heappushpop(h,(evaluateStartScore(start,goal),start,[]))#add then pop the start position
+    startBound = evaluateStartScore(start)
+    depth = startBound
     while solution == None:#while a solution isnt found
-        if(item[1]==goal):#if the item poppeds state is the goalstate
-            solution = item[2]#set the solution to the item poppeds path
-        else:  
-            lastMove = ''
-            if(len(item[2])>0):#if the length of the path is greater than 0
-                lastMove = item[2][len(item[2]) - 1]#set the lastMove to the last move direction
-            possibleMoves = getAllMoves(item[1],lastMove)#get all possible moves
-            for m in possibleMoves:#for each possible move
-                potentialScore = item[0] + evaluateDif(item[1],m,goal)#get potential score
-                cscopy = copy.deepcopy(item[1])#copy current state
-                pathcopy = copy.deepcopy(item[2])#copy current path
-                makeMove(cscopy,m)#make the move on the copy of the current state
-                pathcopy.append(m)#add the direction moved to the copy of the path 
-                heapq.heappush(h, (potentialScore, cscopy,pathcopy))#push the copys to the heap with the potential score 
-        moves = moves + 1#add one to the moves counter
-        item =  heapq.heappop(h)#pop the next item from the heap
+        solution = as_rec(startBound,start,[],depth)#attempt to find a solution at this depth       
+        depth = depth + 1#increase depth
     t_stop = time.process_time()#stop the timer
     printFinal(t_stop-t_start,solution,moves)#print the info about the solution
     

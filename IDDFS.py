@@ -5,8 +5,8 @@ Created on Tue Oct 12 12:22:08 2021
 @author: danny
 """
 
-import time
-import copy
+import time#import for timing
+import copy#import for deepcopying
 from Helpers import getAllMoves,makeMove,printFinal
 
 def dfs_rec(currentState,path:list,goalState,maxDepth):
@@ -34,8 +34,8 @@ def dfs_rec(currentState,path:list,goalState,maxDepth):
     if(currentState[2]==goalState[2]):#if the current state is the goal state
         return path #return the solution
     elif(len(path) < maxDepth):#else if the path isnt at the max depth yet
-        lastMove = ''
-        if(len(path)>0):
+        lastMove = ''#set to blank char for first move
+        if(len(path)>0):#if it isnt the first move
             lastMove = path[len(path) - 1]#set the last move direction
         possibleMoves = getAllMoves(currentState,lastMove)#get all the possible moves from the current state that wont go back to the previous state
         for m in possibleMoves:#for all possible moves
@@ -46,8 +46,8 @@ def dfs_rec(currentState,path:list,goalState,maxDepth):
             pathcopy.append(m)#add the move to the path array  
             solution = dfs_rec(cscopy,pathcopy, goalState,maxDepth)#recursivly call with the new state and new path
             if(solution != None):#if that branch returned something other than None return the solution
-                return solution
-    return None               
+                return solution#return the solution that was found further down the line
+    return None#no solution found down the path
 
 def go(start,goal):
     """
