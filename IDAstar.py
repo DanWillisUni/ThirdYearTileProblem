@@ -4,74 +4,85 @@ Created on Tue Oct 19 14:17:04 2021
 @author: danny
 """
 
-import time
-import copy
-import heapq
-from Helpers import getAllMoves,makeMove,printFinal
+import time#import for timing
+import copy#import for deepcopying
+from Helpers import successors,makeMove
 
-def evaluateDif(previousState,direction,goalState): 
+def as_rec(currentScore,node,path,bound):
     """
-    evaluate the difference to the current score that was made with the move
+    Searches the node and expands its children, if they have a low enough score it will recursivly call this function of them until a solution is found
+    
     Parameters
     ----------
-    previousState : []
-        state of the problem before the move
-    direction : string
-        direction moved
-    goalState : []
-        goal state of the problem    
+    currentScore : int
+        score of the current state
+    node : []
+        state of the problem
+    path : []
+        directions moved to get from the root to the current state
+    bound : int
+        the max score a node can get to be expanded
     Returns
     -------
-    int
-        the increase in the score if the move was made from previousState in the direction given
+    []
+        If a solution is found without going over the max depth then the directions are returned in an array, otherwise None
     """
-    #set the difference in coordinates of the blank tile
-    newY = 0
-    newX = 0
-    if(direction == "N"):#if direction is north
-        newY = - 1
-    elif(direction == "S"):#if direction moved is south
-        newY = 1
-    elif(direction == "E"):#if direction moved is East
-        newX = 1
-    elif(direction == "W"):#if direction moved is west
-        newX = - 1
-        
-    count = 1 # set to one because a move costs one
-    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0]][previousState[1]]):#non zero moves to where it should be
-        count = count - 1#subtracts one from score as a tile has been moved to the correct location
-    if(goalState[1] == previousState[1] + newX and goalState[0] == previousState[0] + newY):#zero moves to where it should be
-        count = count - 1#subtracts one from score as a tile has been moved to the correct location
-    if(previousState[2][previousState[0] + newY][previousState[1] + newX] == goalState[2][previousState[0] + newY][previousState[1]+ newX]):#non zero moves out of where it should be
-        count = count + 1#add one to the score because A tile has been moved out of the correct location
-    if(goalState[0] == previousState[0] and goalState[1] == previousState[1]):#zero moves out of where it should be
-        count = count + 1#add one to the score because A tile has been moved out of the correct location
-    return count#return the difference
+    global movesExamined
+    movesExamined = movesExamined + 1#add one to the moves counter
+    global goalState
+    if(node==goalState):#if the current state is the goalstate
+        return path#set the solution to the item poppeds path
+    else:#not the goal state
+        lastMove = ''#set last move to empty incase it is the first move
+        if(len(path)>0):#if the length of the path is greater than 0
+            lastMove = path[len(path) - 1]#set the lastMove to the last move direction
+        possibleMoves = successors(node,lastMove)#get all possible moves
+        for m in possibleMoves:#for each possible move
+            cscopy = copy.deepcopy(node)#copy current state                
+            makeMove(cscopy,m)#make the move on the copy of the current state
+            potentialScore = h(cscopy,len(path) + 1)#get potential score
+            if potentialScore <= bound:#if the score of the node is less than or equal to the max allowed          
+                pathcopy = copy.deepcopy(path)#copy current path
+                pathcopy.append(m)#add the direction moved to the copy of the path 
+                solution = as_rec(potentialScore,cscopy,pathcopy,bound)#recursive
+                if(solution != None):#if that branch returned something other than None return the solution
+                        return solution#return the solution that was found further down the line
+    return None#no solution found down the path 
          
-def evaluateStartScore(currentState,goalState):
+def h(currentState,costToCurrentState):
     """
-    evaluate number of tiles that are in the wrong place
+    The sum of evaluation functions of the numbered tiles
     
-    used at the start to get the base score but from then on it is more efficient to use the evaluateDif function
+    The evaluation of a tile is the Manhattan distance between its position in the current state and its position in the goal state.
+    
     Parameters
     ----------
     currentState : []
         current state of the problem  
-    goalState : []
-        goal state of the problem    
+    costToCurrentState : int
+        length of the path to current score to be used as base
     Returns
     -------
     int
-        the score of the current state
+        the number of incorrect tiles in the grid
     """
-    count = 0#score is initially set to 0
+    global goalState
+    count = costToCurrentState#score is initially set to the number of moves made to get there
     for i in range(len(currentState[2])):#for Y axis
         for j in range(len(currentState[2][i])):#for X axis
-            if(currentState[2][i][j]!=goalState[2][i][j]):#if a tile is in the wrong place
-                count = count + 1#add one to the score
+            if currentState[2][i][j] != 0:#if it isnt the blank space
+                found = False
+                for gi in range(len(goalState[2])):#for Y axis
+                    for gj in range(len(goalState[2][i])):#for X axis
+                        if currentState[2][i][j] == goalState[2][gi][gj]:#if they match
+                            count = count + abs(i - gi) + abs(j - gj)#sum of the absolute value of the difference
+                            found = True
+                            break
+                    if found:
+                        break
     return count
         
-def go(start,goal):
+def search(start,goal):
     """
     Solves from start to goal
     
@@ -85,30 +96,22 @@ def go(start,goal):
     """
     print("{0} to {1}".format(start,goal))#print start and goal states  
     solution = None
-    moves = 0#set moves to 0
-    global h  
-    h = []#initilize the heap
+    global movesExamined
+    movesExamined = 0#set moves to 0  
+    global goalState
+    goalState = goal#set the global goalState to the goal
     t_start = time.process_time()#start the timer
-    item = heapq.heappushpop(h,(evaluateStartScore(start,goal),start,[]))#add then pop the start position
+    startScore = h(start,0)#get the evaluation of the minimum moves to make it to the goal
+    bound = startScore#set the depth to the starting evaluation
     while solution == None:#while a solution isnt found
-        if(item[1]==goal):#if the item poppeds state is the goalstate
-            solution = item[2]#set the solution to the item poppeds path
-        else:  
-            lastMove = ''
-            if(len(item[2])>0):#if the length of the path is greater than 0
-                lastMove = item[2][len(item[2]) - 1]#set the lastMove to the last move direction
-            possibleMoves = getAllMoves(item[1],lastMove)#get all possible moves
-            for m in possibleMoves:#for each possible move
-                potentialScore = item[0] + evaluateDif(item[1],m,goal)#get potential score
-                cscopy = copy.deepcopy(item[1])#copy current state
-                pathcopy = copy.deepcopy(item[2])#copy current path
-                makeMove(cscopy,m)#make the move on the copy of the current state
-                pathcopy.append(m)#add the direction moved to the copy of the path 
-                heapq.heappush(h, (potentialScore, cscopy,pathcopy))#push the copys to the heap with the potential score 
-        moves = moves + 1#add one to the moves counter
-        item =  heapq.heappop(h)#pop the next item from the heap
+        solution = as_rec(startScore,start,[],bound)#attempt to find a solution at this depth       
+        bound = bound + 1#increase depth
     t_stop = time.process_time()#stop the timer
-    printFinal(t_stop-t_start,solution,moves)#print the info about the solution
+    print("Time was: {:8.2f} seconds".format(t_stop-t_start))#print the time taken
+    print("Solution was: ",solution)#print the directions moved
+    print("Length: ",str(len(solution)))#print the number of moves taken
+    print("Moves: ",movesExamined)#print the number pf moves looked at
+    print()
     
 #set start states and goal states
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],
@@ -127,8 +130,8 @@ goalb = [2,2,[[1,2,3],[4,5,6],[7,8,0]]]
 
 t_start = time.process_time()#start the timer
 for i in a:#for all first set of start states
-    go(i,goala)#solve with first goal
+    search(i,goala)#solve with first goal
 for i in b:#for all second set of start states
-    go(i,goalb)#solve for second goal
+    search(i,goalb)#solve for second goal
 t_stop = time.process_time()#stop the timer
-print("Done in {:8.2f} seconds".format(t_stop-t_start))#print the time taken
+print("Done in {:8.2f} seconds".format(t_stop-t_start))#print the time taken in total for the whole program

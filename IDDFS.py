@@ -7,7 +7,7 @@ Created on Tue Oct 12 12:22:08 2021
 
 import time#import for timing
 import copy#import for deepcopying
-from Helpers import getAllMoves,makeMove,printFinal
+from Helpers import successors,makeMove
 
 def dfs_rec(currentState,path,bound):
     """
@@ -36,7 +36,7 @@ def dfs_rec(currentState,path,bound):
         lastMove = ''#set to blank char for first move
         if(len(path)>0):#if it isnt the first move
             lastMove = path[len(path) - 1]#set the last move direction
-        possibleMoves = getAllMoves(currentState,lastMove)#get all the possible moves from the current state that wont go back to the previous state
+        possibleMoves = successors(currentState,lastMove)#get all the possible moves from the current state that wont go back to the previous state
         for m in possibleMoves:#for all possible moves
             movesExamined = movesExamined + 1#add one to the number of moves examined counter
             cscopy = copy.deepcopy(currentState)#copy state
@@ -74,7 +74,11 @@ def search(start,goal):
         solution = dfs_rec(start,[],bound)#attempt to find a solution at this depth       
         bound = bound + 1#increase the max depth
     t_stop = time.process_time()#stop timer
-    printFinal(t_stop-t_start,solution,movesExamined)#print the info about the solution
+    print("Time was: {:8.2f} seconds".format(t_stop-t_start))#print the time taken
+    print("Solution was: ",solution)#print the directions moved
+    print("Length: ",str(len(solution)))#print the number of moves taken
+    print("Moves: ",movesExamined)#print the number pf moves looked at
+    print()   
     
 #set start states and goal states
 a = [[0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]],

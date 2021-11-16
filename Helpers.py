@@ -7,7 +7,7 @@ Created on Tue Oct 19 12:12:51 2021
 
 import copy
 
-def getAllMoves(state,lastMove):
+def successors(state,lastMove):
     """
     Gets the allowed move directions from the current state
 
@@ -69,27 +69,4 @@ def makeMove(state,direction):
     state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]#set the tile that swapped with the 0
     state[2][newBlankY][newBlankX] = 0#set the new 0
     state[0] = newBlankY
-    state[1] = newBlankX
-
-def printFinal(time,solution,moves):  
-    """
-    Prints the info about each solution to the problem
-
-    Once a solution is found this is called to display how long it took, what the solution was and how many states were looked at
-
-    Parameters
-    ----------
-    time : double
-        time that it took to find the solution
-    solution : []
-        current state of the problem
-    moves : int
-        The number of states that were looked at to find the solution to the problem
-
-    """
-    print("Time was: {:8.2f} seconds".format(time))#print the time taken
-    print("Solution was: ",solution)#print the directions moved
-    print("Length: ",str(len(solution)))#print the number of moves taken
-    print("Moves: ",moves)#print the number pf moves looked at
-    print()
-    
+    state[1] = newBlankX    
