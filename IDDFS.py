@@ -7,67 +7,66 @@ Created on Tue Oct 12 12:22:08 2021
 OUTPUT
 
 [0, 0, [[0, 7, 1], [4, 3, 2], [8, 6, 5]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:     2.41 seconds
+Time was:     4.02 seconds
 Solution was:  ['E', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'E', 'E', 'S', 'W', 'W', 'S', 'E', 'N', 'N', 'E']
 Length:  18
-Moves:  116794
+Moves yielded:  116804
 
 [0, 2, [[5, 6, 0], [1, 3, 8], [4, 7, 2]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:    19.14 seconds
+Time was:    29.78 seconds
 Solution was:  ['W', 'W', 'S', 'E', 'E', 'S', 'W', 'N', 'N', 'E', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'W', 'S', 'E', 'N', 'E']
 Length:  22
-Moves:  860101
+Moves yielded:  860114
 
 [2, 0, [[3, 5, 6], [1, 2, 7], [0, 8, 4]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:    68.59 seconds
+Time was:    99.14 seconds
 Solution was:  ['E', 'E', 'N', 'N', 'W', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'W', 'S', 'E', 'S', 'E', 'N', 'N']
 Length:  24
-Moves:  2829772
+Moves yielded:  2829783
 
 [1, 1, [[7, 3, 5], [4, 0, 2], [8, 1, 6]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:   350.44 seconds
+Time was:   771.94 seconds
 Solution was:  ['W', 'S', 'E', 'N', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'S', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'E', 'N']
 Length:  26
-Moves:  12812219
+Moves yielded:  12812233
 
 [2, 0, [[6, 4, 8], [7, 1, 3], [0, 2, 5]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:    11.55 seconds
+Time was:    11.44 seconds
 Solution was:  ['N', 'E', 'N', 'W', 'S', 'E', 'S', 'W', 'N', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'E']
 Length:  20
-Moves:  454115
+Moves yielded:  454122
 
 [0, 0, [[0, 1, 8], [3, 6, 7], [5, 4, 2]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:     9.02 seconds
+Time was:    11.08 seconds
 Solution was:  ['E', 'S', 'W', 'S', 'E', 'E', 'N', 'N', 'W', 'S', 'S', 'E', 'N', 'N', 'W', 'S', 'W', 'S', 'E', 'E']
 Length:  20
-Moves:  346014
+Moves yielded:  346022
 
 [2, 0, [[6, 4, 1], [7, 3, 2], [0, 5, 8]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:     0.31 seconds
+Time was:     0.34 seconds
 Solution was:  ['N', 'N', 'E', 'E', 'S', 'W', 'W', 'N', 'E', 'E', 'S', 'W', 'S', 'E']
 Length:  14
-Moves:  17010
+Moves yielded:  17018
 
 [0, 0, [[0, 7, 1], [5, 4, 8], [6, 2, 3]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:    72.56 seconds
+Time was:    77.52 seconds
 Solution was:  ['E', 'S', 'E', 'S', 'W', 'W', 'N', 'N', 'E', 'E', 'S', 'W', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'N', 'E', 'S', 'S', 'E']
 Length:  24
-Moves:  2893250
+Moves yielded:  2893262
 
 [0, 2, [[5, 4, 0], [2, 3, 1], [8, 7, 6]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:    26.42 seconds
+Time was:    25.75 seconds
 Solution was:  ['W', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'S', 'S', 'W', 'N', 'E', 'E', 'S', 'W', 'W', 'N', 'E', 'S', 'E']
 Length:  22
-Moves:  1019396
+Moves yielded:  1019408
 
 [2, 1, [[8, 6, 7], [2, 5, 4], [3, 0, 1]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:  4363.41 seconds
+Time was:  4299.00 seconds
 Solution was:  ['E', 'N', 'W', 'W', 'S', 'E', 'E', 'N', 'N', 'W', 'W', 'S', 'E', 'N', 'W', 'S', 'S', 'E', 'E', 'N', 'W', 'S', 'E', 'N', 'N', 'W', 'W', 'S', 'S', 'E', 'E']
 Length:  31
-Moves:  138453837
+Moves yielded:  138453852
 
-Done in  4925.22 seconds
-
+Done in  5330.00 seconds
 """
 
 import time#import for timing
@@ -102,6 +101,8 @@ def successors(state,lastMove):
         allowedMoves.append("S")#add south to direction list
     if(state[0] !=0 and lastMove !="S"):#if the player can move north and south wasnt the last move
         allowedMoves.append("N")#add north to direction list
+    global movesExamined#global number of moves examined 
+    movesExamined = movesExamined + len(allowedMoves)#add one to the moves counter
     return allowedMoves#return the list
 
 def makeMove(state,direction):
@@ -120,9 +121,9 @@ def makeMove(state,direction):
     []
         The state after being transormed by the move in the direction
 
-    """
-    newBlankX = state[1]
-    newBlankY = state[0]
+    """    
+    newBlankX = state[1]#set the new blank X coord to the old
+    newBlankY = state[0]#set the new blank Y coord to the old
     if(direction == "N"):#if the direction is north
         newBlankY = state[0] - 1
     elif(direction == "S"):#if the direction is south
@@ -134,12 +135,14 @@ def makeMove(state,direction):
     #make the move on the state
     state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]#set the tile that swapped with the 0
     state[2][newBlankY][newBlankX] = 0#set the new 0
-    state[0] = newBlankY
-    state[1] = newBlankX   
+    state[0] = newBlankY#set the new states blank tile Y coords
+    state[1] = newBlankX#set the new states blank tile X coords
 
 def dfs_rec(currentState,path,bound):
     """
     DFS recursive function
+    
+    Expands the child nodees of the current node if the max depth hasnt been reached and then recursively calls the function on each of the children
 
     Parameters
     ----------
@@ -155,18 +158,16 @@ def dfs_rec(currentState,path,bound):
     []
         If a solution is found without going over the max depth then the directions are returned in an array, otherwise None
 
-    """
-    global movesExamined#global number of moves examined 
+    """    
     global goalState
     if(currentState==goalState):#if the current state is the goal state
         return path #return the solution
-    elif(len(path) < bound):#else if the path isnt at the max depth yet
+    elif(len(path) <= bound):#else if the path isnt at the max depth yet
         lastMove = ''#set to blank char for first move
         if(len(path)>0):#if it isnt the first move
             lastMove = path[len(path) - 1]#set the last move direction
         possibleMoves = successors(currentState,lastMove)#get all the possible moves from the current state that wont go back to the previous state
         for m in possibleMoves:#for all possible moves
-            movesExamined = movesExamined + 1#add one to the number of moves examined counter
             cscopy = copy.deepcopy(currentState)#copy state
             pathcopy = copy.deepcopy(path)#copy path
             makeMove(cscopy,m)#make the move on the state copy
@@ -196,7 +197,7 @@ def search(start,goal):
     global movesExamined
     movesExamined = 0#set movesExamined to 0
     global goalState
-    goalState = goal
+    goalState = goal#seeet the global goalState to goal
     t_start = time.process_time()#start timer
     while solution == None:#while a solution isnt found
         solution = dfs_rec(start,[],bound)#attempt to find a solution at this depth       
@@ -205,7 +206,7 @@ def search(start,goal):
     print("Time was: {:8.2f} seconds".format(t_stop-t_start))#print the time taken
     print("Solution was: ",solution)#print the directions moved
     print("Length: ",str(len(solution)))#print the number of moves taken
-    print("Moves: ",movesExamined)#print the number of moves looked at
+    print("Moves yielded: ",movesExamined)#print the number of moves looked at
     print()#print blank line to split up the solutions
     
 #set start states and goal states

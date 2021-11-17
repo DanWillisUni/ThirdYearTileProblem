@@ -9,63 +9,63 @@ OUTPUT
 Time was:     0.00 seconds
 Solution was:  ['E', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'E', 'E', 'S', 'W', 'W', 'S', 'E', 'N', 'N', 'E']
 Length:  18
-Moves:  116
+Moves yielded:  205
 
 [0, 2, [[5, 6, 0], [1, 3, 8], [4, 7, 2]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:     0.12 seconds
+Time was:     0.05 seconds
 Solution was:  ['W', 'W', 'S', 'E', 'E', 'S', 'W', 'N', 'N', 'E', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'W', 'S', 'E', 'N', 'E']
 Length:  22
-Moves:  1045
+Moves yielded:  1757
 
 [2, 0, [[3, 5, 6], [1, 2, 7], [0, 8, 4]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:     0.27 seconds
+Time was:     0.23 seconds
 Solution was:  ['E', 'E', 'N', 'N', 'W', 'S', 'W', 'S', 'E', 'N', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'W', 'S', 'E', 'S', 'E', 'N', 'N']
 Length:  24
-Moves:  3518
+Moves yielded:  5902
 
 [1, 1, [[7, 3, 5], [4, 0, 2], [8, 1, 6]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
-Time was:     0.81 seconds
+Time was:     0.84 seconds
 Solution was:  ['W', 'S', 'E', 'N', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'S', 'W', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'E', 'N']
 Length:  26
-Moves:  12935
+Moves yielded:  21617
 
 [2, 0, [[6, 4, 8], [7, 1, 3], [0, 2, 5]]] to [0, 2, [[3, 2, 0], [6, 1, 8], [4, 7, 5]]]
 Time was:     0.05 seconds
 Solution was:  ['N', 'E', 'N', 'W', 'S', 'E', 'S', 'W', 'N', 'N', 'E', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'E']
 Length:  20
-Moves:  959
+Moves yielded:  1617
 
 [0, 0, [[0, 1, 8], [3, 6, 7], [5, 4, 2]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
 Time was:     0.00 seconds
 Solution was:  ['E', 'S', 'W', 'S', 'E', 'E', 'N', 'N', 'W', 'S', 'S', 'E', 'N', 'N', 'W', 'S', 'W', 'S', 'E', 'E']
 Length:  20
-Moves:  85
+Moves yielded:  142
 
 [2, 0, [[6, 4, 1], [7, 3, 2], [0, 5, 8]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
 Time was:     0.00 seconds
 Solution was:  ['N', 'N', 'E', 'E', 'S', 'W', 'W', 'N', 'E', 'E', 'S', 'W', 'S', 'E']
 Length:  14
-Moves:  15
+Moves yielded:  26
 
 [0, 0, [[0, 7, 1], [5, 4, 8], [6, 2, 3]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:     0.14 seconds
+Time was:     0.11 seconds
 Solution was:  ['E', 'S', 'E', 'S', 'W', 'W', 'N', 'N', 'E', 'E', 'S', 'W', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'N', 'E', 'S', 'S', 'E']
 Length:  24
-Moves:  1707
+Moves yielded:  2815
 
 [0, 2, [[5, 4, 0], [2, 3, 1], [8, 7, 6]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:     0.33 seconds
+Time was:     0.19 seconds
 Solution was:  ['W', 'S', 'E', 'N', 'W', 'S', 'W', 'N', 'E', 'S', 'S', 'W', 'N', 'E', 'E', 'S', 'W', 'W', 'N', 'E', 'S', 'E']
 Length:  22
-Moves:  3188
+Moves yielded:  5379
 
 [2, 1, [[8, 6, 7], [2, 5, 4], [3, 0, 1]]] to [2, 2, [[1, 2, 3], [4, 5, 6], [7, 8, 0]]]
-Time was:     1.70 seconds
+Time was:     1.81 seconds
 Solution was:  ['E', 'N', 'W', 'W', 'S', 'E', 'E', 'N', 'N', 'W', 'W', 'S', 'E', 'N', 'W', 'S', 'S', 'E', 'E', 'N', 'W', 'S', 'E', 'N', 'N', 'W', 'W', 'S', 'S', 'E', 'E']
 Length:  31
-Moves:  27395
+Moves yielded:  44026
 
-Done in     3.47 seconds
+Done in     3.30 seconds
 """
 
 import time#import for timing
@@ -100,6 +100,8 @@ def successors(state,lastMove):
         allowedMoves.append("S")#add south to direction list
     if(state[0] !=0 and lastMove !="S"):#if the player can move north and south wasnt the last move
         allowedMoves.append("N")#add north to direction list
+    global movesExamined
+    movesExamined = movesExamined + len(allowedMoves)#add one to the moves counter
     return allowedMoves#return the list
 
 def makeMove(state,direction):
@@ -118,9 +120,9 @@ def makeMove(state,direction):
     []
         The state after being transormed by the move in the direction
 
-    """
-    newBlankX = state[1]
-    newBlankY = state[0]
+    """    
+    newBlankX = state[1]#set the new blank X coord to the old
+    newBlankY = state[0]#set the new blank Y coord to the old
     if(direction == "N"):#if the direction is north
         newBlankY = state[0] - 1
     elif(direction == "S"):#if the direction is south
@@ -132,17 +134,15 @@ def makeMove(state,direction):
     #make the move on the state
     state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]#set the tile that swapped with the 0
     state[2][newBlankY][newBlankX] = 0#set the new 0
-    state[0] = newBlankY
-    state[1] = newBlankX   
+    state[0] = newBlankY#set the new states blank tile Y coords
+    state[1] = newBlankX#set the new states blank tile X coords
 
-def as_rec(currentScore,node,path,bound):
+def as_rec(node,path,bound):
     """
     Searches the node and expands its children, if they have a low enough score it will recursivly call this function of them until a solution is found
     
     Parameters
     ----------
-    currentScore : int
-        score of the current state
     node : []
         state of the problem
     path : []
@@ -153,10 +153,9 @@ def as_rec(currentScore,node,path,bound):
     -------
     []
         If a solution is found without going over the max depth then the directions are returned in an array, otherwise None
-    """
-    global movesExamined
-    movesExamined = movesExamined + 1#add one to the moves counter
+    """    
     global goalState
+    global minBoundFound
     if(node==goalState):#if the current state is the goalstate
         return path#set the solution to the item poppeds path
     else:#not the goal state
@@ -167,16 +166,18 @@ def as_rec(currentScore,node,path,bound):
         for m in possibleMoves:#for each possible move
             cscopy = copy.deepcopy(node)#copy current state                
             makeMove(cscopy,m)#make the move on the copy of the current state
-            potentialScore = h(cscopy,len(path) + 1)#get potential score
+            potentialScore = len(path) + 1 + h(cscopy)#get potential score using len(path) + 1 as the current cost to save on a deep copy
             if potentialScore <= bound:#if the score of the node is less than or equal to the max allowed          
                 pathcopy = copy.deepcopy(path)#copy current path
                 pathcopy.append(m)#add the direction moved to the copy of the path 
-                solution = as_rec(potentialScore,cscopy,pathcopy,bound)#recursive
+                solution = as_rec(cscopy,pathcopy,bound)#recursive
                 if(solution != None):#if that branch returned something other than None return the solution
-                        return solution#return the solution that was found further down the line
+                    return solution#return the solution that was found further down the line
+            elif potentialScore < minBoundFound:
+                minBoundFound = potentialScore
     return None#no solution found down the path 
          
-def h(currentState,costToCurrentState):
+def h(currentState):
     """
     The sum of evaluation functions of the numbered tiles
     
@@ -186,15 +187,13 @@ def h(currentState,costToCurrentState):
     ----------
     currentState : []
         current state of the problem  
-    costToCurrentState : int
-        length of the path to current score to be used as base
     Returns
     -------
     int
         the sum of the minimun the tiles have to move to get to the correct location
     """
     global goalState
-    count = costToCurrentState#score is initially set to the number of moves made to get there
+    count = 0#score is initially set to 0
     for i in range(len(currentState[2])):#for Y axis
         for j in range(len(currentState[2][i])):#for X axis
             if currentState[2][i][j] != 0:#if it isnt the blank space
@@ -227,17 +226,19 @@ def search(start,goal):
     movesExamined = 0#set moves to 0  
     global goalState
     goalState = goal#set the global goalState to the goal
+    global minBoundFound
+    minBoundFound = 10000
     t_start = time.process_time()#start the timer
-    startScore = h(start,0)#get the evaluation of the minimum moves to make it to the goal
-    bound = startScore#set the depth to the starting evaluation
+    bound = h(start)#get the evaluation of the minimum moves to make it to the goal
     while solution == None:#while a solution isnt found
-        solution = as_rec(startScore,start,[],bound)#attempt to find a solution at this depth       
-        bound = bound + 1#increase depth
+        solution = as_rec(start,[],bound)#attempt to find a solution at this depth       
+        bound = minBoundFound#increase depth
+        minBoundFound = 10000
     t_stop = time.process_time()#stop the timer
     print("Time was: {:8.2f} seconds".format(t_stop-t_start))#print the time taken
     print("Solution was: ",solution)#print the directions moved
     print("Length: ",str(len(solution)))#print the number of moves taken
-    print("Moves: ",movesExamined)#print the number pf moves looked at
+    print("Moves yielded: ",movesExamined)#print the number pf moves looked at
     print()#print blank line to split up the solutions
     
 #set start states and goal states
