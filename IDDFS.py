@@ -92,6 +92,7 @@ def successors(state,lastMove):
         The directions that are possible to move from based on the current state
 
     """
+    global movesYielded#the number of moves yielded by this function
     allowedMoves = [] #I discovered that a list was more efficient that yielding a next state
     if(state[1] !=len(state[2][0]) - 1 and lastMove != "W"):#if the player can move east and west wasnt the last move
         allowedMoves.append("E")#add east to direction list
@@ -101,8 +102,7 @@ def successors(state,lastMove):
         allowedMoves.append("S")#add south to direction list
     if(state[0] !=0 and lastMove !="S"):#if the player can move north and south wasnt the last move
         allowedMoves.append("N")#add north to direction list
-    global movesExamined#global number of moves examined 
-    movesExamined = movesExamined + len(allowedMoves)#add one to the moves counter
+    movesYielded = movesYielded + len(allowedMoves)#add one to the moves counter
     return allowedMoves#return the list
 
 def makeMove(state,direction):
@@ -125,13 +125,13 @@ def makeMove(state,direction):
     newBlankX = state[1]#set the new blank X coord to the old
     newBlankY = state[0]#set the new blank Y coord to the old
     if(direction == "N"):#if the direction is north
-        newBlankY = state[0] - 1
+        newBlankY = state[0] - 1#set the newBlankY location one higher
     elif(direction == "S"):#if the direction is south
-        newBlankY = state[0] + 1
+        newBlankY = state[0] + 1#set the new blank tile Y coord one lower
     elif(direction == "E"):#if the direction is east        
-        newBlankX = state[1] + 1
+        newBlankX = state[1] + 1#set the new blank tile X coord one right
     elif(direction == "W"):#if the direction is west
-        newBlankX = state[1] - 1 
+        newBlankX = state[1] - 1#set the new blank tile X coord one left
     #make the move on the state
     state[2][state[0]][state[1]] = state[2][newBlankY][newBlankX]#set the tile that swapped with the 0
     state[2][newBlankY][newBlankX] = 0#set the new 0
@@ -159,13 +159,15 @@ def dfs_rec(currentState,path,bound):
         If a solution is found without going over the max depth then the directions are returned in an array, otherwise None
 
     """    
-    global goalState
+    global goalState#the goal state of the problem
+    global movesYielded#the number of movess yielded by the successors function
     if(currentState==goalState):#if the current state is the goal state
         return path #return the solution
     elif(len(path) <= bound):#else if the path isnt at the max depth yet
         lastMove = ''#set to blank char for first move
         if(len(path)>0):#if it isnt the first move
             lastMove = path[len(path) - 1]#set the last move direction
+            movesYielded = movesYielded + 1#add one here because successor function will ignore the opposite of the previous move
         possibleMoves = successors(currentState,lastMove)#get all the possible moves from the current state that wont go back to the previous state
         for m in possibleMoves:#for all possible moves
             cscopy = copy.deepcopy(currentState)#copy state
@@ -191,12 +193,12 @@ def search(start,goal):
         goal state of the problem    
 
     """
+    global movesYielded
+    global goalState
     print("{0} to {1}".format(start,goal))#print start and goal states
     bound = 1#start at a max depth of 1
-    solution = None
-    global movesExamined
-    movesExamined = 0#set movesExamined to 0
-    global goalState
+    solution = None#set the solution to none    
+    movesYielded = 0#set movesExamined to 0    
     goalState = goal#seeet the global goalState to goal
     t_start = time.process_time()#start timer
     while solution == None:#while a solution isnt found
@@ -206,7 +208,7 @@ def search(start,goal):
     print("Time was: {:8.2f} seconds".format(t_stop-t_start))#print the time taken
     print("Solution was: ",solution)#print the directions moved
     print("Length: ",str(len(solution)))#print the number of moves taken
-    print("Moves yielded: ",movesExamined)#print the number of moves looked at
+    print("Moves yielded: ",movesYielded)#print the number of moves looked at
     print()#print blank line to split up the solutions
     
 #set start states and goal states
